@@ -340,6 +340,9 @@ elif [ -f /usr/sbin/mail ]; then
 elif [ -f /usr/sbin/sendmail ]; then
     MAIL="/usr/sbin/sendmail"
     MAILMODE="sendmail"
+elif [ -f /c/Program\ Files/blat/blat.exe ]; then
+    MAIL="/c/Program Files/blat/blat.exe"
+    MAILMODE="blat"
 else
     MAIL="cantfindit"
     MAILMODE="cantfindit"
@@ -400,6 +403,9 @@ send_mail() {
             ;;
         "sendmail")
             (echo "Subject:$SUBJECT" && echo "TO:$TO" && echo "FROM:$FROM" && echo "$MSG") | "${MAIL}" "$TO"
+            ;;
+        "blat")
+            echo "$MSG" | "${MAIL}" -to "$TO" -subject "$SUBJECT"
             ;;
         "*")
             echo "ERROR: You enabled automated alerts, but the mail binary could not be found."
